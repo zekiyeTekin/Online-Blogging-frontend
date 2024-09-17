@@ -1,0 +1,462 @@
+/* Genel Stil Ayarları */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Navbar Stili */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #333;
+    padding: 1rem 0;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar-right {
+    margin-left: auto;
+}
+
+/* Form Konteyneri */
+.form-container {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    /*width: 100%; */
+    width: 35%; /* Ekran genişliğinin en az 3'te birini kapsayacak */
+    max-width: 600px; /* Maksimum genişlik 600px olacak */
+    min-width: 300px; /* Minimum genişlik 300px olacak */
+    margin: 1rem 0; /* Üstten ve alttan 2rem boşluk bırakma */
+}
+.navbarButton {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 3rem; /* Butonun sağında boşluk bırakır */
+}
+
+.navbarButton:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #333; /* Navbar arka plan rengi */
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar input[type="text"] {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 0.5rem;
+  }
+  
+  .navbar-btn {
+    background-color: #4CAF50; /* Buton rengi */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  
+  .navbar-btn:hover {
+    background-color: #45a049; /* Hover rengi */
+  }
+  
+
+
+
+
+
+
+/* Diğer Stiller */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    display: none;
+}
+
+#result.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* Footer Stili */
+.footer {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 1rem; /* İçerikten sonra footer'ı aşağıya almak için */
+    position: static;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Navbar ve Footer Arası Boşluk */
+.main-content {
+    flex: 1;
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem; /* Navbar boşluğu */
+    margin-bottom: 3rem; /* Footer boşluğu */
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 20px;
+        width: 90%;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}
+
+
+
+
+/* Postları listeleme düzeni */
+.post-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Her post için stil */
+.post {
+    border: 1px solid #ccc;  /* Postu ayıran ince gri çizgi */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Köşelerin yuvarlanması */
+}
+
+/* Görsel ve içeriği yanyana dizmek */
+.post-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.post-content img {
+    width: 250px;
+    height: auto;
+    margin-right: 20px; /* Görsel ile içerik arasında boşluk */
+    border-radius: 8px;
+}
+
+.post-content p {
+    flex: 1;
+    font-size: 1rem;
+}
+
+/* Butonlar */
+.post-footer {
+    display: flex;
+    justify-content: space-between;  /* Butonları eşit aralıkla yerleştirir */
+    margin-top: 10px;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px; /* Butonlar arasında boşluk */
+}
+
+.button-container button {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.button-container button i {
+    margin-right: 8px;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Popup Penceresi için stil */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Arkaplanı karart */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px;
+    position: relative;
+}
+
+.popup-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Tag'ler için stil */
+.post-tags {
+    margin-top: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #f0f0f0;  /* Açık gri arka plan */
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    margin-right: 5px;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+/* Popup içeriği */
+.popup-content {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.popup-img {
+    width: 100%;
+    height: auto;
+}
+
+/* Yorum yapma alanı */
+.comment-section {
+    margin-top: 20px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.comment-section button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comment-section button:hover {
+    background-color: #0056b3;
+}
+
+/* Başarı mesajı */
+.success-message {
+    margin-top: 10px;
+    color: green;
+}
+
+
+
+
+/* Popup penceresi */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    height: 80%;
+    display: flex;
+}
+
+.popup-body {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.popup-details {
+    flex: 1;
+    padding-right: 10px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.popup-comments {
+    flex: 1;
+    padding-left: 10px;
+    overflow-y: auto;
+}
+
+.popup-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post-tags {
+    margin-top: 10px;
+}
+
+.comment-section {
+    margin-top: 20px;
+}
+
+.comments-section {
+    margin-top: 20px;
+}
+
+.comment {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}

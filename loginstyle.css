@@ -1,0 +1,669 @@
+*{
+    font-family: 'Roboto', sans-serif;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    outline: none; border: none;
+    text-decoration: none;
+    text-transform: none;
+    /* transition: .2s linear; */
+}
+.all-content{
+    background: #f7f5f2;
+    flex-grow: 1;
+}
+
+html{
+    font-size: 100%;
+    overflow-x: hidden;
+    scroll-padding-top: 9rem;
+    scroll-behavior: smooth;
+}
+html ::-webkit-scrollbar-track{
+    background: transparent;
+}
+html ::-webkit-scrollbar-thumb{
+    background: #cfd1c4;
+    border-radius: 3rem;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #b4a8a8; /* Kaydırma çubuğu hover rengi */
+}
+
+html ::-webkit-scrollbar{
+    width: 8px;
+}
+
+body{
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    display: flex; 
+}
+
+section{
+    padding: 2rem 7%;
+}
+
+.btn{
+    margin-top: 1rem;
+    display: inline-block;
+    padding: .9rem 3rem;
+    font-size: 1.7rem;
+    color: #960303;
+    cursor: pointer;
+}
+
+.btn:hover{
+    letter-spacing: 0.2rem;
+}
+
+
+/* navbar start */
+.header{
+    position: absolute;
+    display: flex;
+    background: #f7f5f2;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2%; 
+    position: absolute;  /*/değiştirme */
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #98707055; 
+}
+
+.header .logo img{
+    height: 3rem;
+
+}
+
+#nabvar{
+    display: none;
+}
+
+#navbar a{
+    margin: 0 0.4rem;
+    font-size: 1.6rem;
+    color: #804d4d;
+     text-decoration: none;/* çizgiyi varsayılan olarak kaldır. */
+}
+
+#navbar a:hover{
+    margin: 0 1rem;
+    font-size: 1.6rem;
+    color: #804d4d;
+    border-bottom: .1rem solid #9b8080;
+    padding-bottom: .25rem;
+}
+
+
+#header .navbar{
+    position: absolute;
+    top: 100%; right: -100%;
+    height: calc(100vh - 27rem);
+    width: 13rem;
+    box-shadow: -10px 0 10px #0000001a;
+    background: rgba(161, 129, 55, 0.7); /* RGBA ile şeffaflaştırma */
+    backdrop-filter: blur(20px);
+    overflow: auto;
+
+}
+#header .navbar.active{
+    right: 0;
+  
+    
+}
+
+
+
+.header .icons div{
+    color: #804d4d;
+    cursor: pointer;
+    font-size: 1.3rem;
+    margin-left: 2rem;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.header .icons div:hover{
+    color: #9c8585;
+}
+
+#menu-btn{
+    display: relative;
+}
+
+
+#connection-btn {
+    position: relative;
+  }
+  
+#connection-btn .badge {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 8px;
+  }
+  
+
+.header .search-form {
+    right: 7%;
+    background: #fff;
+    width: 17rem; /*50 yapılabilir ortalasın diye */
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 25rem;
+}
+
+
+.header .search-form input{
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    color: black;
+    padding: 1rem;
+    text-transform: none;
+}
+
+.header .search-form label{
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 0.9rem;
+    color: black;
+}
+
+.header .search-form label:hover{
+    color: #9c8585;
+}
+
+
+
+.header .cart-items-container{
+    position: absolute;
+    top: 100%; right: -100%;
+    height: 300px;
+    
+    width: 27rem;
+    background: #9c8585; 
+    padding: 0 1.5rem;
+    overflow: auto;;
+}
+.header .cart-items-container.active{
+    right: 0;
+
+}
+
+
+
+.header .cart-items-container table {
+    width: 100%;
+}
+
+.header .cart-items-container th, 
+.header .cart-items-container td {
+    padding: 10px;
+    backdrop-filter: blur(10px);
+}
+.sender-name {
+    color: #030303; /* Koyu renk */
+    font-weight: 700;
+    font-weight: bold; /* İstediğiniz diğer stiller buraya eklenir */
+}
+
+.allconnectiontable tbody tr:hover {
+    background: rgba(174, 161, 161, 0.2);
+    backdrop-filter: blur(20px);
+}
+
+
+
+
+
+/* media queries */
+
+@media (max-width:991px){
+  html{
+     
+        font-size: 50%;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    } 
+    .header{
+        padding: 1.5rem 2rem; 
+    }
+    #header .navbar {
+        height: calc(100vh - 57rem); /* Daha büyük ekranlar için */
+    }
+
+}
+
+@media (max-width:768px){
+
+    
+
+    #header .navbar {
+        height: calc(100vh - 56rem); /* Daha büyük ekranlar için */
+    }
+    
+
+ 
+    .header .search-form{
+        width: 35%;
+        justify-content: center;
+        right: 2rem;
+
+    }  
+
+    .home_content{
+        background-position: left;
+        justify-content: center;        
+    } 
+
+    .home_content .content h3{
+        font-size: 3rem;
+    }  
+    .home_content .content p{
+        font-size: 1.5rem;
+    }
+  
+
+}
+
+@media (max-width:450px){
+
+    html{
+        font-size: 50%;
+    }
+}
+
+.home_content{
+    min-height: 100vh;    
+    display: flex;
+    align-items: center;
+    /* background: url(images/1\ \(1\).png) no-repeat;
+    background-size: cover;
+    background-position: center; */
+
+}
+
+.home_content .content{
+    max-width: 60rem;
+}
+
+
+
+.main-content {
+    height: 100%;
+    position: relative;
+}
+
+
+
+/* LOGİN PAGE VİEW START */
+#body-login-register{
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;  
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+#bodyGorsel img{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; 
+}
+
+#header {
+    background: #e8e8e6;
+    border-bottom: .1rem solid #d3b080;
+}
+
+#header .navigation a{
+    position: relative;
+    font-size: 1.1rem;
+    color: #141210;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 30px;
+}
+
+#header .navigation a::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 1px;
+    background: #644545;
+    border-radius: 5px;
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+#header .navigation a:hover::after{
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: .5s;
+}
+
+.navigation .btnLogin{
+    width: 120px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #141210;
+    outline: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #141210;   
+    font-weight: 500;
+    margin-left: 30px;
+    transition: .5s;
+}
+
+.navigation .btnLogin:hover{
+    background: #886D2F;
+    color: #e8e8e6;
+}
+
+.wrapper {
+    position: relative;
+    width: 400px;
+    height: 440px;
+    background: transparent;
+    border: 2px solid  #d3b080;
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: scale(0);
+    transition: transform .5s ease, height .2s ease;
+    margin-top: 100px;/* bu ikisi kaymasın diye wrapper şeysi */
+    margin-left: 30%;
+    z-index: 1; /*  ??? */
+}
+
+.wrapper.active-btnLogin{
+    transform: scale(1);
+}
+
+.wrapper.active {
+    height: 480px;
+}
+
+.wrapper .form-box.login {
+   transition: transform .18s ease;
+   transform: translateX(0);
+}
+
+.wrapper.active .form-box.login {
+    transition: none;
+    transform: translateX(-400px);
+}
+
+.wrapper .form-box.register{
+    position: absolute;
+    transition: none;
+    transform: translateX(400px);
+}
+
+.wrapper.active .form-box.register {
+    transition: transform .18s ease;
+    transform: translateX(0);
+ }
+
+.wrapper .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #886D2F;
+    font-size: 2em;
+    color: #e8e8e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.wrapper .form-box{
+    width: 100%;
+    padding: 40px;
+}
+
+.form-box h2{
+    font-size: 2em;
+    color: #e8e8e6;
+    text-align: center;
+}
+
+.input-login-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #4f3232;
+    margin: 30px 0;
+}
+
+.input-login-box label{
+    position: absolute;
+    top: 25%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #e8e8e6;
+    font-weight: 500;
+    font-weight: bold;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-login-box input:focus~label,
+.input-login-box input:valid~label
+{
+    top: -0.05rem;
+    left: 0;
+    font-size: 0.75em;
+    color: #4f3232;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.input-login-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #e8e8e6;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+}
+
+
+.input-login-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #e8e8e6;
+    line-height: 57px;
+}
+
+.remember-forgot {
+    font-size: .9em;
+    color: #e8e8e6;
+    font-weight: 500;
+    margin: -15px 0 15px;   
+}
+
+.remember-forgot a {
+    color: #e8e8e6;
+    text-decoration: none;
+    margin-right: 3px;
+    display: flex;
+    justify-content: end;
+} 
+
+.remember-forgot a:hover{
+    text-decoration: underline;
+}
+
+.form-box .btn-login{
+    width: 100px;
+    height: 35px;
+    background: #9d7823;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #e8e8e6;
+    font-weight: 500;
+   
+
+    justify-content: right;
+    align-items: center; 
+} 
+
+.login-register {
+    font-size: .9em;
+    color: #e8e8e6;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a {
+    color: #9d7823;
+    text-decoration: none;
+    margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+}
+
+.login-register p a:hover{
+    text-decoration: underline;
+}
+
+
+
+
+/* ABOUT  SECTİON :start*/
+#about{
+    width: 100%;
+    height: 100vh;
+    padding-top: 0px;
+    position: relative;
+    z-index: 1;
+    color: black; /* Metin rengini beyaz yapar */
+    padding: 20px;
+    margin: 0 0 20px 0;
+}
+
+#about .container{
+    width: 100%;
+    height: 80vh;
+    border-radius: 10px;
+    margin: 0 0 20px 0; /* Alt boşluk azaltıldı */
+    max-width: 940px;
+    min-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, .92); /* Arka planı yarı şeffaf beyaz yapar */
+    border-radius: 10px;
+}
+
+#about .heading{
+    text-align: center;
+    margin-bottom: 50px;
+    color: black;
+    font-size: 20px;
+    font-weight: bold; 
+    border-bottom: 2px solid #9d7823; /*cizgi oluşturtuyor*/
+}
+
+#about .heading span{
+    color: #9d7823;
+}
+
+#about .card {
+    border-radius: 10px;
+    height: 50vh;
+}
+
+#about .card img{
+    border-radius: 10px;
+    height: 50vh;
+}
+#about h3{
+    padding-left: 10px;
+    padding-top: 4px;
+    font-weight: bold;
+}
+
+#about p{
+    padding-left: 10px;
+    font-size: 15px;
+    text-align: justify;
+}
+
+@media screen and (max-width:982px){
+    #about p{
+        font-size: 8px;
+    }
+
+}
+@media screen and (max-width:756px){
+    #about p{
+        font-size: 15px;
+    }
+    #about{
+        height: 100vh;
+    }
+    #about .card {
+        border-radius: 10px;
+        width: 50rem;
+        height: 30vh;
+    }
+    
+    #about .card img{
+        border-radius: 10px;
+        height: 30vh;
+    }
+}
+
+/* ABOUT SECTİON :end  */
+
+
+/* LOGİN PAGE VİEW END */
+
+
+
