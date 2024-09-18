@@ -231,7 +231,7 @@ button:hover {
 }
 
 .post-content img {
-    width: 250px;
+    width: 150px;
     height: auto;
     margin-right: 20px; /* Görsel ile içerik arasında boşluk */
     border-radius: 8px;
