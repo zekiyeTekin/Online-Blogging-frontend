@@ -3,39 +3,39 @@
 
  //ÇIKIŞ YAPMA FONKSİYONU START
  document.addEventListener('DOMContentLoaded', () => {
-    // Token kontrol fonksiyonu
+    
     function getToken() {
         return localStorage.getItem('token');
     }
   
-    // Token silme fonksiyonu
+    
     function removeToken() {
         localStorage.removeItem('token');
     }
   
-    // Login sayfasına yönlendirme fonksiyonu
+    
     function redirectToLogin() {
         window.location.href = 'login.html';
     }
   
-    // Çıkış fonksiyonu
+    
     function logout() {
         removeToken();
         redirectToLogin();
     }
   
-    // Eğer token yoksa login sayfasına yönlendir
+    
     if (!getToken()) {
         redirectToLogin();
     }
   
-    // Çıkış bağlantısına tıklama olayını dinleyiciye ekle
+    
     document.getElementById('logoutLink').addEventListener('click', (event) => {
         event.preventDefault();
         logout();
     });
   
-    // Sayfa geri gidildiğinde login sayfasına yönlendir
+    
     window.addEventListener('popstate', () => {
         if (!getToken()) {
             redirectToLogin();
@@ -51,20 +51,104 @@
 const postList = document.getElementById("postList");
 
 window.onload = function() {
-    const postList = document.getElementById("postList");
-    fetchPosts();  // Verileri çekmek için fonksiyon
+    //const postList = document.getElementById("postList");
+    fetchPosts();  
 }
 
-function fetchPosts() {
-    //const token = localStorage.getItem("authToken");
+
+//KULLANICI ADINI BULMAK İÇİN START
+function fetchUserNames(emails) {
     const token = getToken();
-    const decodedToken = parseJwt(token);
-
-    const nameUser = decodedToken.name;
-    
-
     const headers = new Headers();
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/json');
 
+    return fetch(`http://localhost:8088/user/usernames?emails=${emails.join(',')}`, {
+        method: 'GET',
+        headers: headers
+    })
+    .then(response => response.json())
+    .catch(error => {
+        console.error('Error fetching user names:', error);
+        return {}; 
+    });
+}
+
+
+
+
+
+//KULLANICI ADINI BULMAK İÇİN END!!! BURADA POSTEDBY KISMINDA KULLANICI MAİLİNİ ALIYORUM
+
+// function fetchPosts() {
+//     //const token = localStorage.getItem("authToken");
+//     const token = getToken();
+//     const headers = new Headers();
+
+//     headers.append('Authorization', `Bearer ${token}`);
+//     headers.append('Content-Type', 'application/json');
+
+
+//     fetch('http://localhost:8088/post/get/posts', {
+//         mode: 'cors',
+//         method: 'GET',
+//         headers: headers
+//     })
+//     .then(response => response.json())
+//     .then(posts => {
+//         const postList = document.getElementById("postList");
+        
+//         //console.log(posts.data);
+//         if (!postList) {
+//             console.error('postList element not found');
+//             return;
+//         }
+
+//         //console.log("tüm postları görüntülüyoruz",posts); 
+//         if (!posts.data || !Array.isArray(posts.data)) {
+//             console.error('Invalid posts data format');
+//             return;
+//         }
+
+//         let htmlContent = '';
+//         posts.data.forEach(post => {
+//             const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
+//             // console.log('Image URL:', imgUrl); 
+//             //console.log("postedBy",post.postedBy);
+            
+//             htmlContent += `
+//                 <div class="post">
+//                     <h3>${post.name}</h3>
+//                     <p>Posted by: ${post.postedBy }</p>
+//                     <p>Date: ${new Date(post.date).toLocaleString()}</p>
+//                     <div class="post-content">
+//                          <img src="${imgUrl}"  alt="${post.title}>
+//                         <p>${post.content}</p>
+//                     </div>
+//                     <div class="post-footer">
+//                         <div class="button-container">
+//                             <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i>(${post.likeCount})</button>
+//                             <button><i class="fas fa-eye"></i>(${post.viewCount})</button>
+//                             <button onclick="openPostPopup(${post.id})"> View Post</button>  <!-- View Post Butonuna onclick event ekliyoruz -->
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//         });
+
+//         postList.innerHTML = htmlContent;
+//     })
+//     .catch(error => {
+//         console.error('Error fetching posts:', error);
+//     });
+// }
+
+ //POSTLARI LİSTELEME FONKSİYONU END !!! BURADA POSTEDBY KISMINDA KULLANICI MAİLİNİ ALIYORUM
+
+
+ function fetchPosts() {
+    const token = getToken();
+    const headers = new Headers();
     headers.append('Authorization', `Bearer ${token}`);
     headers.append('Content-Type', 'application/json');
 
@@ -76,59 +160,64 @@ function fetchPosts() {
     .then(response => response.json())
     .then(posts => {
         const postList = document.getElementById("postList");
-        
-        
-        console.log(posts.data);
         if (!postList) {
             console.error('postList element not found');
             return;
         }
 
-        console.log(posts); // Tüm yanıtı kontrol edin
         if (!posts.data || !Array.isArray(posts.data)) {
             console.error('Invalid posts data format');
             return;
         }
 
-        let htmlContent = '';
-        posts.data.forEach(post => {
-            const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
-           // console.log('Image URL:', imgUrl); // URL'yi kontrol edin
-            console.log("postedBy",post.postedBy);
-            const nameUser = decodedToken.name;
+        
+        const emailList = [...new Set(posts.data.map(post => post.postedBy))];
 
-            //burada postu kşm paylaştığı değil o an login olan kişi
-            // adı gözüküyor !!!!!!!!!!
-            console.log("User Name",nameUser);
-            
-            htmlContent += `
-                <div class="post">
-                    <h3>${post.name}</h3>
-                    <p>Posted by: ${post.postedBy}</p>
-                    <p>Date: ${new Date(post.date).toLocaleString()}</p>
-                    <div class="post-content">
-                         <img src="${imgUrl}"  alt="${post.title}>
-                        <p>${post.content}</p>
-                    </div>
-                    <div class="post-footer">
-                        <div class="button-container">
-                            <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i>(${post.likeCount})</button>
-                            <button><i class="fas fa-eye"></i>(${post.viewCount})</button>
-                            <button onclick="openPostPopup(${post.id})"> View Post</button>  <!-- View Post Butonuna onclick event ekliyoruz -->
+        fetchUserNames(emailList)
+            .then(emailToNameMap => {
+                
+                let htmlContent = '';
+                posts.data.forEach(post => {
+                    //console.log("postedBy",post.postedBy);
+                    //console.log("postedBy",emailList);
+                    const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
+                    const postedByName = emailToNameMap[post.postedBy] || post.postedBy;
+
+                    htmlContent += `
+                        <div class="post">
+                            <h3>${post.name}</h3>
+                            <p>Posted by: ${postedByName}</p>
+                            <p>Date: ${new Date(post.date).toLocaleString()}</p>
+                            <div class="post-content">
+                                 <img src="${imgUrl}" alt="${post.title}">
+                                <p>${post.content}</p>
+                            </div>
+                            <div class="post-footer">
+                                <div class="button-container">
+                                    <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i>(${post.likeCount})</button>
+                                    <button><i class="fas fa-eye"></i>(${post.viewCount})</button>
+                                    <button onclick="openPostPopup(${post.id})"> View Post</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            `;
-        });
+                    `;
+                });
 
-        postList.innerHTML = htmlContent;
+                postList.innerHTML = htmlContent;
+            })
+            .catch(error => {
+                console.error('Error processing user names:', error);
+            });
     })
     .catch(error => {
         console.error('Error fetching posts:', error);
     });
 }
 
- //POSTLARI LİSTELEME FONKSİYONU END
+
+
+
+
 
 
  function getToken() {
@@ -151,12 +240,12 @@ function likePost(postId, buttonElement) {
     })
     .then(response => response.json())
     .then(updatedPost => {
-        // Güncellenmiş beğeni sayısını butona yansıt
+        
         const likeButton = buttonElement;
         const updatedLikeCount = updatedPost.data.likeCount;
         likeButton.innerHTML = `<i class="fas fa-thumbs-up"></i> Like (${updatedLikeCount})`;
         //console.log(updatedLikeCount);
-        // Popup açık ise, popup'taki beğeni sayısını da güncelle
+        
         const popup = document.getElementById('popup');
         if (popup && popup.querySelector('.button-container button')) {
             const popupLikeButton = popup.querySelector('.button-container button');
@@ -171,15 +260,11 @@ function likePost(postId, buttonElement) {
 
 
 
- //POST DETAYINI GÖRÜNTÜLEME FONKSİYONU START
+
+// POST DETAYINI GÖRÜNTÜLEME FONKSİYONU START
 function openPostPopup(postId) {
-    //const token = localStorage.getItem("authToken");
     const token = getToken();
-    const decodedToken = parseJwt(token);
-    
-
     const headers = new Headers();
-
     headers.append('Authorization', `Bearer ${token}`);
     headers.append('Content-Type', 'application/json');
 
@@ -189,56 +274,58 @@ function openPostPopup(postId) {
     })
     .then(response => response.json())
     .then(post => {
-        const tagsHtml = Array.isArray(post.data.tags) ? post.data.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
-        const imgUrl = `http://localhost:8088/upload/images/${post.data.img}`;
-        //console.log('Image URL:', imgUrl);
-        // Popup içerik hazırlama
-        //console.log(post.data.tags);
-        const popupContent = `
+       
+        return fetchUserNames([post.data.postedBy])  
+            .then(emailToNameMap => {
+                const postedByName = emailToNameMap[post.data.postedBy] || post.data.postedBy;
+                
+                const tagsHtml = Array.isArray(post.data.tags) ? post.data.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+                const imgUrl = `http://localhost:8088/upload/images/${post.data.img}`;
+                
+                
+                const popupContent = `
+                    <div id="popup" class="popup">
+                        <div class="popup-content">
+                            <span class="close-btn" onclick="closePopup()">&#x2716;</span>
+                            <div class="popup-body">
+                                <div class="popup-details">
+                                    <h3>${post.data.name}</h3>
+                                    <p>Posted by: ${postedByName}</p>
+                                    <p>Date: ${new Date(post.data.date).toLocaleString()}</p>
+                                    <div class="post-content">
+                                        <img src="${imgUrl}" alt="${post.data.title}" class="popup-img">
+                                        <p>${post.data.content}</p>
+                                    </div>
+                                    <div class="post-tags" id="post-tags">${tagsHtml}</div>
+                                    <!-- Yorum Ekleme Alanı -->
+                                    <div class="comment-section">
+                                        <textarea id="comment-content" placeholder="Yorumunuzu yazın..."></textarea>
+                                        <button onclick="submitComment(${post.data.id})"><i class="fas fa-comment"></i> Publish</button>
+                                    </div>
+                                </div>
+                                <div class="popup-comments">
+                                    <div id="comments-section" class="comments-section">
+                                        <!-- Yorumlar buraya eklenecek -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', popupContent);
 
-        <div id="popup" class="popup">
-    <div class="popup-content">
-        <span class="close-btn" onclick="closePopup()">&#x2716;</span>
-        <div class="popup-body">
-            <div class="popup-details">
-                <h3>${post.data.name}</h3>
-                <p>Posted by: ${post.data.postedBy}</p>
-                <p>Date: ${new Date(post.data.date).toLocaleString()}</p>
-                <div class="post-content">
-                    <img src="${imgUrl}" alt="${post.title} class="popup-img">
-                    
-                <p>${post.data.content}</p>
-                </div>
-                <div class="post-tags" id="post-tags"> ${tagsHtml}</div>
-                <!-- Yorum Ekleme Alanı -->
-                <div class="comment-section">
-                    <textarea id="comment-content" placeholder="Yorumunuzu yazın..."></textarea>
-                <button onclick="submitComment(${post.data.id})"><i class="fas fa-comment"></i> Publish</button>
-                </div>
-            </div>
-            <div class="popup-comments">
-                <div id="comments-section" class="comments-section">
-                    <!-- Yorumlar buraya eklenecek -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', popupContent);
+               
+                loadComments(postId);
 
-        // Yorumları yükle
-        loadComments(postId);
-
-         // Popup'u göster
-         document.getElementById('popup').style.display = 'flex';
+               
+                document.getElementById('popup').style.display = 'flex';
+            });
     })
     .catch(error => {
         console.error('Error fetching post details:', error);
     });
 }
-//POST DETAYINI GÖRÜNTÜLEME FONKSİYONU END
-
+// POST DETAYINI GÖRÜNTÜLEME FONKSİYONU END
 
 
 
@@ -258,7 +345,7 @@ function loadComments(postId) {
     .then(response => response.json())
     .then(comments => {
         const commentsSection = document.getElementById('comments-section');
-        console.log(comments);
+        //console.log(comments);
         commentsSection.innerHTML = Array.isArray(comments.data) ? comments.data.map(comment => `
             <div class="comment">
                 <p><strong>${comment.postedBy}</strong> - ${new Date(comment.createdAt).toLocaleString()}</p>
@@ -294,13 +381,13 @@ function submitComment(postId) {
     headers.append('Content-Type', 'application/json');
 
     const decodedToken = parseJwt(token);
-    const name = decodedToken.name; // Token'dan name bilgisini çekiyoruz
+    const name = decodedToken.name; 
     //console.log('Name from token:', name);
     //console.log('Email from token:', decodedToken);
     //const postedBy = decodedToken.sub; //postedby da email kullanmak istersem diye
 
     const commentContent = document.getElementById('comment-content').value;
-     // Burada gerçek kullanıcı adını dinamik olarak almanız gerekir.
+    
 
     const bodyData = {
         content : commentContent,
@@ -315,7 +402,7 @@ function submitComment(postId) {
     .then(response => response.json())
     .then(data => {
         loadComments(postId);
-        document.getElementById('comment-content').value = ''; // İçeriği temizle
+        document.getElementById('comment-content').value = ''; 
         //alert('Yorum başarılı bir şekilde eklendi.');
     })
     .catch(error => {
@@ -332,9 +419,9 @@ function submitComment(postId) {
 function closePopup() {
     const popup = document.getElementById('popup');
     if (popup) {
-        popup.remove(); // Popup'ı DOM'dan kaldır
+        popup.remove(); 
 
-        // Popup kapatıldığında post listesini yeniden yüklüyoruz
+       
         fetchPosts();
 
     }
@@ -396,11 +483,4 @@ function searchPosts() {
     });
 }
 //POST ARAMA YAPMA FONKSİYONU END
-
-
-
-
-
-
-
 

@@ -115,56 +115,6 @@ function getToken() {
 // });
 
 
-
-
-//POST OLUŞTURMA FONKSİYONU START
-// document.getElementById("postForm").addEventListener("submit", function(event) {
-//     event.preventDefault(); // Formun varsayılan submit işlemini engelle
-
-//     const token = getToken();
-//     const headers = new Headers();
-
-//     headers.append('Authorization', `Bearer ${token}`);
-//     //headers.append('Content-Type', 'application/json');
-
-//     const formData = new FormData();
-//     formData.append("name", document.getElementById("name").value.trim());
-//     formData.append("content", document.getElementById("content").value.trim());
-//     formData.append("postedBy", document.getElementById("postedBy").value.trim());
-//     formData.append("img", document.getElementById("img").files[0]);
-//     formData.append("tags", document.getElementById("tags").value.trim().split(",").filter(tag => tag.trim() !== ""));
-
-//     for (let [key, value] of formData.entries()) {
-//         console.log(`${key}:`, value);
-//     }
-    
-
-//     fetch('http://localhost:8088/post/create', {
-//         method: 'POST',
-//         headers: headers,
-//         body: formData
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('API yanıtında bir hata oluştu.');
-//         }
-//         return response.json();
-//     })
-//     .then(data => {
-//         console.log('Başarıyla Gönderildi:', data);
-//         document.getElementById("result").textContent = "Post başarıyla oluşturuldu!";
-//         document.getElementById("result").classList.remove("error");
-//         document.getElementById("result").style.display = "block";
-//         document.getElementById('postForm').reset();  // Formu Gönderdikten Sonra Temizle
-//     })
-//     .catch((error) => {
-//         console.error('Hata:', error);
-//         document.getElementById("result").textContent = "Post oluşturulurken bir hata oluştu.";
-//         document.getElementById("result").classList.add("error");
-//         document.getElementById("result").style.display = "block";
-//     });
-// });
-
 //POST OLUŞTURMA FONKSİYONU END
 
 
@@ -180,7 +130,7 @@ function parseJwt(token) {
 }
 
 
-
+//POST OLUŞTURMA FONKSİYONU START
 document.getElementById("postForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Formun varsayılan submit işlemini engelle
 
@@ -188,7 +138,7 @@ document.getElementById("postForm").addEventListener("submit", function(event) {
     const headers = new Headers();
 
     const decodedToken = parseJwt(token);
-    console.log('Email from token:', decodedToken);
+    //console.log('Email from token:', decodedToken);
     const username = decodedToken.sub;
 
     headers.append('Authorization', `Bearer ${token}`);
@@ -210,7 +160,7 @@ document.getElementById("postForm").addEventListener("submit", function(event) {
         })
         .then(response => response.text())
         .then(filePath => {
-            console.log('File uploaded successfully:', filePath);
+            //console.log('File uploaded successfully:', filePath);
 
             // Post verilerini JSON olarak gönderme
             const post = {
@@ -234,7 +184,7 @@ document.getElementById("postForm").addEventListener("submit", function(event) {
             return response.json();
         })
         .then(data => {
-            console.log('Başarıyla Gönderildi:', data);
+            //console.log('Başarıyla Gönderildi:', data);
             document.getElementById("result").textContent = "Post başarıyla oluşturuldu!";
             document.getElementById("result").classList.remove("error");
             document.getElementById("result").style.display = "block";
@@ -248,3 +198,4 @@ document.getElementById("postForm").addEventListener("submit", function(event) {
         });
     }
 });
+//POST OLUŞTURMA FONKSİYONU END

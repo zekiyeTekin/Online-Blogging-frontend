@@ -70,9 +70,9 @@ const username = document.getElementById('username').value ;
         return response.json();
         })
     .then(data => {
-        console.log('Success:', data);
+        //console.log('Success:', data);
         if (data.token) {
-            console.log('Token:', data.token);
+            //console.log('Token:', data.token);
         } else {
             console.log('No token received');
         }
@@ -92,15 +92,13 @@ const username = document.getElementById('username').value ;
 
    
  function login(event) {
-    // Sayfanın yenilenmesini engelle
+    
         event.preventDefault();
 
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
-        console.log(email, password);
-
-
+        //console.log(email, password);
          fetch('http://localhost:8088/auth/login', {
             mode:'cors'  ,
             method: 'POST',
@@ -122,11 +120,10 @@ const username = document.getElementById('username').value ;
 
           })
           .then(data => {
-            console.log('Success:', data);
+            //console.log('Success:', data);
             if (data.token) {
                 saveToken(data.token);
                 //console.log("Token:", data.token);
-                
                 const storedToken = getToken();
                 //console.log("Stored Token after saving:", storedToken);
                 
