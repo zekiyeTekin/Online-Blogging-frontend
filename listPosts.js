@@ -242,7 +242,7 @@ function loadComments(postId) {
         commentsSection.innerHTML = Array.isArray(comments.data) ? comments.data.map(comment => `
             <div class="comment">
                 <p><strong>${comment.postedBy}</strong> - ${new Date(comment.createdAt).toLocaleString()}</p>
-                <p>${comment.content}</p>
+                <p>${decodeURIComponent(comment.content)}</p>
             </div>
         `).join('') : '';
     })
@@ -282,7 +282,7 @@ function submitComment(postId) {
      // Burada gerçek kullanıcı adını dinamik olarak almanız gerekir.
 
     const bodyData = {
-        content : encodeURIComponent(commentContent),
+        content : commentContent,
         postedBy : postedBy
     };
 
