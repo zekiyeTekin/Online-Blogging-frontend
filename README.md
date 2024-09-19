@@ -61,6 +61,8 @@ Aynı zamanda, kullanıcı etkileşimlerini teşvik eden beğeni ve yorum sistem
 | **Kayıt Sayfası** | ![Register Page](imageForReadme/register.png)  |
 | **Hakkımızda**  | ![Detail](imageForReadme/detail.png)  |
 | **Post Oluşturma**  | ![CreatePost](imageForReadme/createPost.png)  |
-| **Postları Listeleme**  | ![ListPosts](imageForReadme/listPosts.png)  |
-| **Post Detaylarını Görüntüleme**  | ![DetailPost](imageForReadme/postDetails.png)  |
-| **Postları Başlığa Göre Arama ve Listeleme**  | ![SearchPost](imageForReadme/searchPostName.png)  |
+| **Postları Listeleme**  | ![ListPosts](imageForReadme/allPosts.png)  |
+| **Post Detaylarını Görüntüleme 1**  | ![DetailPost](imageForReadme/detailPost.png)  |
+| **Post Detaylarını Görüntüleme 2**  | ![DetailPost](imageForReadme/detailPost2.png)  |
+| **Postları Başlığa Göre Arama ve Listeleme**  | ![SearchPost](imageForReadme/searchPost.png)  |
+
