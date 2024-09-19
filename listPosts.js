@@ -57,18 +57,26 @@ window.onload = function() {
 
 function fetchPosts() {
     //const token = localStorage.getItem("authToken");
+    const token = getToken();
+    const decodedToken = parseJwt(token);
+
+    const nameUser = decodedToken.name;
+    
+
+    const headers = new Headers();
+
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/json');
 
     fetch('http://localhost:8088/post/get/posts', {
         mode: 'cors',
         method: 'GET',
-        headers:{
-             'Authorization': 'application/json',
-            'Content-Type': 'application/json'
-         }
+        headers: headers
     })
     .then(response => response.json())
     .then(posts => {
         const postList = document.getElementById("postList");
+        
         
         console.log(posts.data);
         if (!postList) {
@@ -85,7 +93,14 @@ function fetchPosts() {
         let htmlContent = '';
         posts.data.forEach(post => {
             const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
-            console.log('Image URL:', imgUrl); // URL'yi kontrol edin
+           // console.log('Image URL:', imgUrl); // URL'yi kontrol edin
+            console.log("postedBy",post.postedBy);
+            const nameUser = decodedToken.name;
+
+            //burada postu kşm paylaştığı değil o an login olan kişi
+            // adı gözüküyor !!!!!!!!!!
+            console.log("User Name",nameUser);
+            
             htmlContent += `
                 <div class="post">
                     <h3>${post.name}</h3>
@@ -159,19 +174,24 @@ function likePost(postId, buttonElement) {
  //POST DETAYINI GÖRÜNTÜLEME FONKSİYONU START
 function openPostPopup(postId) {
     //const token = localStorage.getItem("authToken");
+    const token = getToken();
+    const decodedToken = parseJwt(token);
+    
+
+    const headers = new Headers();
+
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/json');
 
     fetch(`http://localhost:8088/post/by?id=${postId}`, {
         method: 'GET',
-        headers: {
-            'Authorization': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        headers: headers
     })
     .then(response => response.json())
     .then(post => {
         const tagsHtml = Array.isArray(post.data.tags) ? post.data.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
         const imgUrl = `http://localhost:8088/upload/images/${post.data.img}`;
-            console.log('Image URL:', imgUrl);
+        //console.log('Image URL:', imgUrl);
         // Popup içerik hazırlama
         //console.log(post.data.tags);
         const popupContent = `
@@ -265,7 +285,6 @@ function parseJwt(token) {
 }
 
 //YORUM YAPMA FONKSİYONU START
-//BURADA KALDIM--0****************************
 function submitComment(postId) {
     //const token = localStorage.getItem("authToken");
     const token = getToken();
@@ -275,15 +294,17 @@ function submitComment(postId) {
     headers.append('Content-Type', 'application/json');
 
     const decodedToken = parseJwt(token);
-    console.log('Email from token:', decodedToken);
-    const postedBy = decodedToken.sub;
+    const name = decodedToken.name; // Token'dan name bilgisini çekiyoruz
+    //console.log('Name from token:', name);
+    //console.log('Email from token:', decodedToken);
+    //const postedBy = decodedToken.sub; //postedby da email kullanmak istersem diye
 
     const commentContent = document.getElementById('comment-content').value;
      // Burada gerçek kullanıcı adını dinamik olarak almanız gerekir.
 
     const bodyData = {
         content : commentContent,
-        postedBy : postedBy
+        postedBy : name
     };
 
     fetch(`http://localhost:8088/comment/create?postId=${postId}`, {
