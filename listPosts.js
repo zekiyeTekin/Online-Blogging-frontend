@@ -69,17 +69,30 @@ function fetchPosts() {
     .then(response => response.json())
     .then(posts => {
         const postList = document.getElementById("postList");
+        
         console.log(posts.data);
+        if (!postList) {
+            console.error('postList element not found');
+            return;
+        }
+
+        console.log(posts); // Tüm yanıtı kontrol edin
+        if (!posts.data || !Array.isArray(posts.data)) {
+            console.error('Invalid posts data format');
+            return;
+        }
 
         let htmlContent = '';
         posts.data.forEach(post => {
+            const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
+            console.log('Image URL:', imgUrl); // URL'yi kontrol edin
             htmlContent += `
                 <div class="post">
                     <h3>${post.name}</h3>
                     <p>Posted by: ${post.postedBy}</p>
                     <p>Date: ${new Date(post.date).toLocaleString()}</p>
                     <div class="post-content">
-                        <img src="${post.img}" alt="Post Image">
+                         <img src="${imgUrl}"  alt="${post.title}>
                         <p>${post.content}</p>
                     </div>
                     <div class="post-footer">
@@ -157,6 +170,8 @@ function openPostPopup(postId) {
     .then(response => response.json())
     .then(post => {
         const tagsHtml = Array.isArray(post.data.tags) ? post.data.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+        const imgUrl = `http://localhost:8088/upload/images/${post.data.img}`;
+            console.log('Image URL:', imgUrl);
         // Popup içerik hazırlama
         //console.log(post.data.tags);
         const popupContent = `
@@ -170,7 +185,8 @@ function openPostPopup(postId) {
                 <p>Posted by: ${post.data.postedBy}</p>
                 <p>Date: ${new Date(post.data.date).toLocaleString()}</p>
                 <div class="post-content">
-                    <img src="${post.data.img}" alt="Post Image" class="popup-img">
+                    <img src="${imgUrl}" alt="${post.title} class="popup-img">
+                    
                 <p>${post.data.content}</p>
                 </div>
                 <div class="post-tags" id="post-tags"> ${tagsHtml}</div>
@@ -237,6 +253,17 @@ function loadComments(postId) {
 //YORUMLARI GÖRÜNTÜLEME FONKSİYONU END
 
 
+
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 //YORUM YAPMA FONKSİYONU START
 //BURADA KALDIM--0****************************
 function submitComment(postId) {
@@ -247,8 +274,12 @@ function submitComment(postId) {
     headers.append('Authorization', `Bearer ${token}`);
     headers.append('Content-Type', 'application/json');
 
+    const decodedToken = parseJwt(token);
+    console.log('Email from token:', decodedToken);
+    const postedBy = decodedToken.sub;
+
     const commentContent = document.getElementById('comment-content').value;
-    const postedBy = 'Authenticated User'; // Burada gerçek kullanıcı adını dinamik olarak almanız gerekir.
+     // Burada gerçek kullanıcı adını dinamik olarak almanız gerekir.
 
     const bodyData = {
         content : encodeURIComponent(commentContent),
@@ -314,13 +345,15 @@ function searchPosts() {
         } else {
             let htmlContent = '';
             posts.data.forEach(post => {
+                const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
+                
                 htmlContent += `
                     <div class="post">
                         <h3>${post.name}</h3>
                         <p>Posted by: ${post.postedBy}</p>
                         <p>Date: ${new Date(post.date).toLocaleString()}</p>
                         <div class="post-content">
-                            <img src="${post.img}" alt="Post Image">
+                            <img src="${imgUrl}" alt="Post Image">
                             <p>${post.content}</p>
                         </div>
                         <div class="post-footer">

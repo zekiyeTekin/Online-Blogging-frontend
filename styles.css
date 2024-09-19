@@ -218,7 +218,7 @@ button:hover {
 
 /* Her post için stil */
 .post {
-    border: 1px solid #ccc;  /* Postu ayıran ince gri çizgi */
+    border: 2px solid #ccc;  /* Postu ayıran ince gri çizgi */
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px; /* Köşelerin yuvarlanması */
@@ -227,14 +227,19 @@ button:hover {
 /* Görsel ve içeriği yanyana dizmek */
 .post-content {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column; /* İçerikleri dikey olarak hizalar */
+    align-items: flex-start; /* İçeriği sola yaslar */
+    margin-top: 20px; /* İçeriğin altına boşluk ekler */
+  
 }
 
 .post-content img {
     width: 150px;
     height: auto;
-    margin-right: 20px; /* Görsel ile içerik arasında boşluk */
     border-radius: 8px;
+    object-fit: cover;
+    margin-right: 20px; /* Görsel ile içerik arasında boşluk */
+
 }
 
 .post-content p {
@@ -245,13 +250,16 @@ button:hover {
 /* Butonlar */
 .post-footer {
     display: flex;
-    justify-content: space-between;  /* Butonları eşit aralıkla yerleştirir */
+    flex-direction: column; /* Butonları alt alta dizar */
+    align-items: flex-start; /* Butonları sola yaslar */
     margin-top: 10px;
 }
 
 .button-container {
     display: flex;
     gap: 10px; /* Butonlar arasında boşluk */
+    justify-content: flex-start; /* Butonları soldan hizalar */
+    margin-top: 10px; /* Butonlar ile içerik arasına boşluk ekler */
 }
 
 .button-container button {

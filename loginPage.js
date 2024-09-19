@@ -32,6 +32,8 @@ function getToken() {
     return localStorage.getItem('token');
 }
 
+
+
 function removeToken() {
     localStorage.removeToken('token');
 }
@@ -88,11 +90,11 @@ const username = document.getElementById('username').value ;
 
 
 
-
-
-
    
- function login() {
+ function login(event) {
+    // Sayfanın yenilenmesini engelle
+        event.preventDefault();
+
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
@@ -103,8 +105,7 @@ const username = document.getElementById('username').value ;
             mode:'cors'  ,
             method: 'POST',
             headers: {
-      
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: 
               JSON.stringify({
@@ -123,26 +124,32 @@ const username = document.getElementById('username').value ;
           .then(data => {
             console.log('Success:', data);
             if (data.token) {
-                console.log('Token:', data.token);
-                
-                localStorage.setItem('authToken', data.token);
                 saveToken(data.token);
-
-                window.location.href = "index.html";
-            } else {
-                console.log('No token received');
+                //console.log("Token:", data.token);
+                
+                const storedToken = getToken();
+                //console.log("Stored Token after saving:", storedToken);
+                
+                if (storedToken) {
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 500);
+                } else {
+                    console.log("Token kaydedilemedi.");
+                }
             }
-           
-          })
-          .catch ((error) => {
+        })
+        .catch ((error) => {
             console.error('There was a problem with the fetch operation:', error);
           }
         );
 }
-    
-    document.getElementById('login-btn').addEventListener('click', ()=> {
-        login();
-    });
+
+document.getElementById('login-btn').addEventListener('click', login);
+
+    // document.getElementById('login-btn').addEventListener('click', ()=> {
+    //     login();
+    // });
 
 
 

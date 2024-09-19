@@ -1,5 +1,13 @@
 //localStorage.setItem("token", "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ6ZWtAZ21haWwuY29tIiwiaWF0IjoxNzI2NTIxNTI2LCJleHAiOjE3MjY1MzAxNjYsImF1dGhvcml0aWVzIjpbIlVTRVIiXX0.2GUOdnJUxP3sdo3MhJi7MSl6nWjCaRe3qqL3yIgPvhUiQ4BE2jrj1ngFopfKee-Y");
 
+//login olduğunda ilk login.html sayfası çalışması için 
+const token = localStorage.getItem('token');
+  
+  // Eğer token yoksa login sayfasına yönlendir
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
 
 //ÇIKIŞ YAPMA FONKSİYONU START
 document.addEventListener('DOMContentLoaded', () => {
