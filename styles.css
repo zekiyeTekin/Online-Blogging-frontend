@@ -41,23 +41,25 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-width: 400px;
     /*width: 100%; */
-    width: 35%; /* Ekran genişliğinin en az 3'te birini kapsayacak */
+    width: 40%; /* Ekran genişliğinin en az 3'te birini kapsayacak */
     max-width: 600px; /* Maksimum genişlik 600px olacak */
-    min-width: 300px; /* Minimum genişlik 300px olacak */
+    min-width: 350px; /* Minimum genişlik 300px olacak */
     margin: 1rem 0; /* Üstten ve alttan 2rem boşluk bırakma */
 }
 .navbarButton {
-    background-color: #007bff;
+    background-color: #709df6;
     color: white;
     padding: 10px 10px;
+    border: none;
     text-decoration: none;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
     font-size: 16px;
     margin-right: 3rem; /* Butonun sağında boşluk bırakır */
 }
 
 .navbarButton:hover {
-    background-color: #0056b3;
+    background-color: rgb(76, 123, 217);
 }
 
 
@@ -139,7 +141,7 @@ h2 {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background-color: #709df6;
     color: white;
     border: none;
     border-radius: 5px;
@@ -150,7 +152,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: rgb(76, 123, 217);
 }
 
 #result {
@@ -214,6 +216,7 @@ button:hover {
 .post-list {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Her post için stil */
@@ -222,13 +225,17 @@ button:hover {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px; /* Köşelerin yuvarlanması */
+
+    text-align: center; 
+    align-items: center;
+    
 }
 
 /* Görsel ve içeriği yanyana dizmek */
 .post-content {
     display: flex;
     flex-direction: column; /* İçerikleri dikey olarak hizalar */
-    align-items: flex-start; /* İçeriği sola yaslar */
+    align-items: center; /* İçeriği sola yaslar */
     margin-top: 20px; /* İçeriğin altına boşluk ekler */
   
 }
@@ -245,13 +252,14 @@ button:hover {
 .post-content p {
     flex: 1;
     font-size: 1rem;
+    text-align: justify;
 }
 
 /* Butonlar */
 .post-footer {
     display: flex;
     flex-direction: column; /* Butonları alt alta dizar */
-    align-items: flex-start; /* Butonları sola yaslar */
+    align-items: flex-end; /* Butonları sola yaslar */
     margin-top: 10px;
 }
 
@@ -266,7 +274,7 @@ button:hover {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    background-color: #007BFF;
+    background-color: #709ecf;
     color: white;
     border: none;
     border-radius: 5px;
@@ -279,7 +287,7 @@ button:hover {
 }
 
 .button-container button:hover {
-    background-color: #0056b3;
+    background-color: rgb(76, 123, 217);
 }
 
 
@@ -378,7 +386,7 @@ button:hover {
 }
 
 .comment-section button {
-    background-color: #007BFF;
+    background-color: #709df6;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -387,7 +395,7 @@ button:hover {
 }
 
 .comment-section button:hover {
-    background-color: #0056b3;
+    background-color: rgb(76, 123, 217);
 }
 
 /* Başarı mesajı */
