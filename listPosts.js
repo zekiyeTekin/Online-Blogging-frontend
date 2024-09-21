@@ -429,16 +429,71 @@ function closePopup() {
 // POPUP'I KAPATMA FONKSİYONU END
 
 
+ //POST ARAMA YAPMA FONKSİYONU START !!! postedBy kısmı email ile alınıyor hali !!!
+// function searchPosts() {
+//     //const token = localStorage.getItem("authToken");
+//     const token = getToken();
+//     const headers = new Headers();
+
+//     headers.append('Authorization', `Bearer ${token}`);
+//     headers.append('Content-Type', 'application/json');
+//     const searchQuery = document.getElementById('searchInput').value;
+    
+
+//     fetch(`http://localhost:8088/post/search/by?name=${searchQuery}`, {
+//         method: 'GET',
+//         headers: headers,
+//     })
+//     .then(response => response.json())
+//     .then(posts => {
+//         console.log(posts.data);
+//         const postList = document.getElementById("postList");
+//         if (posts.length === 0) {
+//             postList.innerHTML = "<p>No posts found</p>";
+//         } else {
+//             let htmlContent = '';
+//             posts.data.forEach(post => {
+//                 const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
+                
+//                 htmlContent += `
+//                     <div class="post">
+//                         <h3>${post.name}</h3>
+//                         <p>Posted by: ${post.postedBy}</p>
+//                         <p>Date: ${new Date(post.date).toLocaleString()}</p>
+//                         <div class="post-content">
+//                             <img src="${imgUrl}" alt="Post Image">
+//                             <p>${post.content}</p>
+//                         </div>
+//                         <div class="post-footer">
+//                             <div class="button-container">
+//                                 <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i> Like (${post.likeCount})</button>
+//                                 <button><i class="fas fa-comment"></i> View (${post.viewCount})</button>
+//                                 <button onclick="openPostPopup(${post.id})"><i class="fas fa-eye"></i> View Post</button>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 `;
+//             });
+
+//             postList.innerHTML = htmlContent;
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error fetching posts:', error);
+//     });
+// }
+ //POST ARAMA YAPMA FONKSİYONU END !!! postedBy kısmı email ile alınıyor hali !!!
+
+
+
 //POST ARAMA YAPMA FONKSİYONU START
 function searchPosts() {
-    //const token = localStorage.getItem("authToken");
     const token = getToken();
     const headers = new Headers();
 
     headers.append('Authorization', `Bearer ${token}`);
     headers.append('Content-Type', 'application/json');
     const searchQuery = document.getElementById('searchInput').value;
-    
 
     fetch(`http://localhost:8088/post/search/by?name=${searchQuery}`, {
         method: 'GET',
@@ -446,19 +501,25 @@ function searchPosts() {
     })
     .then(response => response.json())
     .then(posts => {
-        console.log(posts.data);
         const postList = document.getElementById("postList");
-        if (posts.length === 0) {
+        if (!posts.data || posts.data.length === 0) {
             postList.innerHTML = "<p>No posts found</p>";
-        } else {
+            return;
+        }
+        
+        const emailList = [...new Set(posts.data.map(post => post.postedBy))];
+        
+        fetchUserNames(emailList)
+        .then(emailToNameMap => {
             let htmlContent = '';
             posts.data.forEach(post => {
                 const imgUrl = `http://localhost:8088/upload/images/${post.img}`;
-                
+                const postedByName = emailToNameMap[post.postedBy] || post.postedBy; // Adını mapten al ya da email göster
+
                 htmlContent += `
                     <div class="post">
                         <h3>${post.name}</h3>
-                        <p>Posted by: ${post.postedBy}</p>
+                        <p>Posted by: ${postedByName}</p>
                         <p>Date: ${new Date(post.date).toLocaleString()}</p>
                         <div class="post-content">
                             <img src="${imgUrl}" alt="Post Image">
@@ -476,11 +537,13 @@ function searchPosts() {
             });
 
             postList.innerHTML = htmlContent;
-        }
+        })
+        .catch(error => {
+            console.error('Error fetching user names:', error);
+        });
     })
     .catch(error => {
         console.error('Error fetching posts:', error);
     });
 }
 //POST ARAMA YAPMA FONKSİYONU END
-
