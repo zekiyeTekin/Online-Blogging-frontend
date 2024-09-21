@@ -92,7 +92,7 @@ body {
   }
   
   .navbar-btn {
-    background-color: #4CAF50; /* Buton rengi */
+    background-color: #cfbd5a;
     color: white;
     padding: 0.5rem 1rem;
     border: none;
@@ -102,9 +102,18 @@ body {
   }
   
   .navbar-btn:hover {
-    background-color: #45a049; /* Hover rengi */
+    background-color: #a3933c; 
   }
   
+  #logoutLink {
+    margin-right: 10px; /* İkon ile tooltip arasında boşluk bırak */
+}
+
+    #tooltip {
+    margin-left: 5px; /* Tooltip ile ikon arasında boşluk bırak */
+}
+
+
 
 
 
@@ -254,12 +263,16 @@ button:hover {
     font-size: 1rem;
     text-align: justify;
 }
+.post p i {
+    color: #999; 
+}
+
 
 /* Butonlar */
 .post-footer {
     display: flex;
     flex-direction: column; /* Butonları alt alta dizar */
-    align-items: flex-end; /* Butonları sola yaslar */
+    align-items: flex-start; /* Butonları sola yaslar */
     margin-top: 10px;
 }
 
@@ -338,7 +351,7 @@ button:hover {
 
 .tag {
     display: inline-block;
-    background-color: #f0f0f0;  /* Açık gri arka plan */
+    background-color: rgb(185, 199, 227); /* Açık gri arka plan */
     border: 1px solid #ccc;
     padding: 5px 10px;
     border-radius: 15px;
@@ -434,6 +447,10 @@ button:hover {
     width: 100%;
     height: 100%;
 }
+.popup-body p i {
+    color: #999; /* İkonun rengi */
+}
+
 
 .popup-details {
     flex: 1;

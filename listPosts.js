@@ -3,45 +3,52 @@
 
  //ÇIKIŞ YAPMA FONKSİYONU START
  document.addEventListener('DOMContentLoaded', () => {
-    
+    const logoutLink = document.getElementById('logoutLink');
+
+    // Eğer logoutLink mevcutsa dinleyici ekle
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            logout();
+        });
+    } else {
+        console.warn("logoutLink bulunamadı.");
+    }
+
+    // Token kontrol fonksiyonu
     function getToken() {
         return localStorage.getItem('token');
     }
   
-    
+    // Token silme fonksiyonu
     function removeToken() {
         localStorage.removeItem('token');
     }
   
-    
+    // Login sayfasına yönlendirme fonksiyonu
     function redirectToLogin() {
         window.location.href = 'login.html';
     }
   
-    
+    // Çıkış fonksiyonu
     function logout() {
         removeToken();
         redirectToLogin();
     }
-  
-    
-    if (!getToken()) {
+
+    // Eğer token yoksa login sayfasına yönlendir
+    if (window.location.pathname !== '/login.html' && !getToken()) {
         redirectToLogin();
     }
   
-    
-    document.getElementById('logoutLink').addEventListener('click', (event) => {
-        event.preventDefault();
-        logout();
-    });
-  
-    
+    // Sayfa geri gidildiğinde login sayfasına yönlendir
     window.addEventListener('popstate', () => {
         if (!getToken()) {
             redirectToLogin();
         }
     });
-  });
+});
+
 
 //ÇIKIŞ YAPMA FONKSİYONU END
 
@@ -185,17 +192,17 @@ function fetchUserNames(emails) {
 
                     htmlContent += `
                         <div class="post">
+                            <p style="text-align: left;"><i class="fas fa-user"></i> : ${postedByName}</p>
+                            <p style="text-align: left;"><i class="fas fa-calendar-alt"></i> : ${new Date(post.date).toLocaleString()}</p>
                             <h3>${post.name}</h3>
-                            <p>Posted by: ${postedByName}</p>
-                            <p>Date: ${new Date(post.date).toLocaleString()}</p>
                             <div class="post-content">
                                  <img src="${imgUrl}" alt="${post.title}">
                                 <p>${post.content}</p>
                             </div>
                             <div class="post-footer">
                                 <div class="button-container">
-                                    <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i>(${post.likeCount})</button>
-                                    <button><i class="fas fa-eye"></i>(${post.viewCount})</button>
+                                    <button onclick="likePost(${post.id}, this)"><i class="fas fa-heart"></i>(${post.likeCount})</button>
+                                    <button><i class="fas fa-eye"> </i>(${post.viewCount})</button>
                                     <button onclick="openPostPopup(${post.id})"> View Post</button>
                                 </div>
                             </div>
@@ -243,13 +250,13 @@ function likePost(postId, buttonElement) {
         
         const likeButton = buttonElement;
         const updatedLikeCount = updatedPost.data.likeCount;
-        likeButton.innerHTML = `<i class="fas fa-thumbs-up"></i> Like (${updatedLikeCount})`;
+        likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
         //console.log(updatedLikeCount);
         
         const popup = document.getElementById('popup');
         if (popup && popup.querySelector('.button-container button')) {
             const popupLikeButton = popup.querySelector('.button-container button');
-            popupLikeButton.innerHTML = `<i class="fas fa-thumbs-up"></i> Like (${updatedLikeCount})`;
+            popupLikeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
         }
     })
     .catch(error => {
@@ -289,9 +296,9 @@ function openPostPopup(postId) {
                             <span class="close-btn" onclick="closePopup()">&#x2716;</span>
                             <div class="popup-body">
                                 <div class="popup-details">
+                                <p style="text-align: left;"><i class="fas fa-user"></i> : ${postedByName}</p>
+                                    <p style="text-align: left;"><i class="fas fa-calendar-alt"></i> : ${new Date(post.data.date).toLocaleString()}</p>
                                     <h3>${post.data.name}</h3>
-                                    <p>Posted by: ${postedByName}</p>
-                                    <p>Date: ${new Date(post.data.date).toLocaleString()}</p>
                                     <div class="post-content">
                                         <img src="${imgUrl}" alt="${post.data.title}" class="popup-img">
                                         <p>${post.data.content}</p>
@@ -518,17 +525,17 @@ function searchPosts() {
 
                 htmlContent += `
                     <div class="post">
+                        <p style="text-align: left;"><i class="fas fa-user"></i> : ${postedByName}</p>
+                        <p style="text-align: left;"><i class="fas fa-calendar-alt"></i> : ${new Date(post.date).toLocaleString()}</p>
                         <h3>${post.name}</h3>
-                        <p>Posted by: ${postedByName}</p>
-                        <p>Date: ${new Date(post.date).toLocaleString()}</p>
                         <div class="post-content">
                             <img src="${imgUrl}" alt="Post Image">
                             <p>${post.content}</p>
                         </div>
                         <div class="post-footer">
                             <div class="button-container">
-                                <button onclick="likePost(${post.id}, this)"><i class="fas fa-thumbs-up"></i> Like (${post.likeCount})</button>
-                                <button><i class="fas fa-comment"></i> View (${post.viewCount})</button>
+                                <button onclick="likePost(${post.id}, this)"><i class="fas fa-heart"></i> (${post.likeCount})</button>
+                                <button><i class="fas fa-comment"></i> (${post.viewCount})</button>
                                 <button onclick="openPostPopup(${post.id})"><i class="fas fa-eye"></i> View Post</button>
                             </div>
                         </div>
