@@ -226,43 +226,188 @@ function fetchUserNames(emails) {
 
 
 
+//kULLANICININ MAİLİ İLE ID BULMA START
+// function getAuthenticatedUserId() {
+//     const token = getToken();
+//     const headers = new Headers();
+
+//     headers.append('Authorization', `Bearer ${token}`);
+//     headers.append('Content-Type', 'application/json');
+
+//     const decodedToken = parseJwt(token);
+//     const userEmail = decodedToken.sub;
+
+//     if (!token) {
+//         console.error("No authentication token found.");
+//         return null;
+//     }
+
+//     console.log("userEmaiedcfeerl",userEmail);
+
+//     // Kullanıcı mailine göre ID'yi almak için API çağrısı yap
+//     fetch(`http://localhost:8088/user/by?mail=${userEmail}`, {
+//         method: 'GET',
+//         headers: headers
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok: ' + response.statusText);
+//         }
+//         return response.json();
+//     })
+//     .then(user => {
+//         console.log("User ID:", user.id); // Kullanıcı ID'sini burada kullanabilirsiniz
+//         return user.id; // Gerekirse burada dönebilirsiniz
+//     })
+//     .catch(error => {
+//         console.error('Error fetching user ID:', error);
+//     });
+// }
+
+
+
+function getUserByEmail(email) {
+    const token = getToken(); // Kullanıcı token'ını al
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/json');
+
+   
+    return fetch(`http://localhost:8088/user/by?mail=${email}`, {
+        method: 'GET',
+        headers: headers,
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorResponse => {
+                console.error('Error fetching user by email:', errorResponse.message);
+                throw new Error('Kullanıcı bilgileri alınamadı.');
+            });
+        }
+        return response.json(); // Başarılı yanıtı döndür
+    })
+    .then(userData => {
+        console.log("userdata",userData.id);
+        return userData.id; 
+    })
+    .catch(error => {
+        console.error('Error in getUserByEmail:', error);
+        return null; // Hata durumunda null döndür
+    });
+}
+
+
+function likePost(postId, buttonElement) {
+    const token = getToken();
+    const headers = new Headers();
+    
+    headers.append('Authorization', `Bearer ${token}`);
+    headers.append('Content-Type', 'application/json');
+    
+    const decodedToken = parseJwt(token);
+    console.log('Email from token:', decodedToken);
+    const postedBy = decodedToken.sub; 
+    console.log('Name from token:', postedBy);  
+
+    // Kullanıcı ID'sini almak için getUserByEmail fonksiyonunu çağır
+    getUserByEmail(postedBy)
+        .then(user => {
+            if (!user) {
+                throw new Error('User ID could not be retrieved.');
+            }
+            const userId = user; // Kullanıcı ID'sini al
+            console.log('User ID from email:', userId);
+
+            // Like işlemi için fetch çağrısını yap
+            return fetch(`http://localhost:8088/like/by?userId=${userId}&postId=${postId}`, {
+                method: 'POST',
+                headers: headers,
+            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    // Eğer kullanıcı "ALREADY_LIKED" mesajı alırsa
+                    if (err.code === 409 && err.message === 'ALREADY_LIKED') {
+                        alert('Bu postu zaten beğenmişsiniz.');
+                        return null; // İşlem başarılı değil ama hata mesajı verildi
+                    } else {
+                        throw new Error('Beğenme işlemi başarısız oldu.');
+                    }
+                });
+            }
+            return response.json();
+        })
+        .then(updatedPost => {
+            console.log(updatedPost);
+            const likeButton = buttonElement;
+            const updatedLikeCount = updatedPost.data.post.likeCount;
+            likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
+            console.log(updatedLikeCount);
+            
+            const popup = document.getElementById('popup');
+            if (popup && popup.querySelector('.button-container button')) {
+                const popupLikeButton = popup.querySelector('.button-container button');
+                popupLikeButton.innerHTML = `<i class="fa-regular fa-heart" style="color: ;"></i> (${updatedLikeCount})`;
+            }
+        })
+        .catch(error => {
+            console.error('Error liking post:', error);
+        });
+}
+
+
+
 
  function getToken() {
     return localStorage.getItem('token');
   }
 
  //POSTLARI BEĞENME FONKSİYONU START
-function likePost(postId, buttonElement) {
-    //const token = localStorage.getItem("authToken");
-    const token = getToken();
-    const headers = new Headers();
+// function likePost(postId, buttonElement) {
+//     //const token = localStorage.getItem("authToken");
+//     const token = getToken();
+//     const headers = new Headers();
 
-    headers.append('Authorization', `Bearer ${token}`);
-    headers.append('Content-Type', 'application/json');
-    
+//     headers.append('Authorization', `Bearer ${token}`);
+//     headers.append('Content-Type', 'application/json');
 
-    fetch(`http://localhost:8088/post/like/by?id=${postId}`, {
-        method: 'PUT',
-        headers: headers,
-    })
-    .then(response => response.json())
-    .then(updatedPost => {
+//     const decodedToken = parseJwt(token);
+//     console.log('Email from token:', decodedToken);
+//     const postedBy = decodedToken.sub; 
+//     console.log('Name from token:', postedBy);  
+//     const userId = getUserByEmail(postedBy); 
+//     console.log('User ID from email:', userId);
+
+//     //const commentContent = document.getElementById('comment-content').value;
+
+//     fetch(`http://localhost:8088/like/by?userId=${userId}&postId=${postId}`, {
+//         method: 'POST',
+//         headers: headers,
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error('Beğenme işlemi başarısız oldu.'); 
+//         }
+//         return response.json(); 
+//     })
+//     .then(updatedPost => {
         
-        const likeButton = buttonElement;
-        const updatedLikeCount = updatedPost.data.likeCount;
-        likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-        //console.log(updatedLikeCount);
+//         const likeButton = buttonElement;
+//         const updatedLikeCount = updatedPost.data.likeCount;
+//         likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
+//         console.log(updatedLikeCount);
         
-        const popup = document.getElementById('popup');
-        if (popup && popup.querySelector('.button-container button')) {
-            const popupLikeButton = popup.querySelector('.button-container button');
-            popupLikeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-        }
-    })
-    .catch(error => {
-        console.error('Error liking post:', error);
-    });
-}
+//         const popup = document.getElementById('popup');
+//         if (popup && popup.querySelector('.button-container button')) {
+//             const popupLikeButton = popup.querySelector('.button-container button');
+//             popupLikeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error liking post:', error);
+//     });
+// }
  //POSTLARI BEĞENME FONKSİYONU END
 
 
