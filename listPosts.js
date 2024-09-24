@@ -287,7 +287,7 @@ function getUserByEmail(email) {
         return response.json(); 
     })
     .then(userData => {
-        console.log("userdata",userData.id);
+       // console.log("userdata",userData.id);
         return userData.id; 
     })
     .catch(error => {
@@ -306,9 +306,9 @@ function likePost(postId, buttonElement) {
     headers.append('Content-Type', 'application/json');
     
     const decodedToken = parseJwt(token);
-    console.log('Email from token:', decodedToken);
+    //console.log('Email from token:', decodedToken);
     const postedBy = decodedToken.sub; 
-    console.log('Name from token:', postedBy);  
+    //console.log('Name from token:', postedBy);  
 
     getUserByEmail(postedBy)
         .then(user => {
@@ -316,7 +316,7 @@ function likePost(postId, buttonElement) {
                 throw new Error('User ID could not be retrieved.');
             }
             const userId = user; 
-            console.log('User ID from email:', userId);
+            //console.log('User ID from email:', userId);
 
            
             return fetch(`http://localhost:8088/like/by?userId=${userId}&postId=${postId}`, {
@@ -331,19 +331,18 @@ function likePost(postId, buttonElement) {
             return response.json();
         })
         .then(updatedPost => {
-            console.log("updatedPost",updatedPost.data);
+            //console.log("updatedPost",updatedPost.data);
 
             if (updatedPost && updatedPost.data) {
                 const likeButton = buttonElement;
                 const updatedLikeCount = updatedPost.data.post.likeCount;
-        
+                
                 likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-                console.log(updatedLikeCount);
-        
+                //console.log(updatedLikeCount);
                 const popup = document.getElementById('popup');
                 if (popup && popup.querySelector('.button-container button')) {
                     const popupLikeButton = popup.querySelector('.button-container button');
-                    popupLikeButton.innerHTML = `<i class="fa-regular fa-heart"></i> (${updatedLikeCount})`;
+                    popupLikeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
                 }
             } else {
                 alert('Beğeni veya beğenme işleminden vazgeçme sırasında bir hata oluştu.');
