@@ -267,7 +267,7 @@ function fetchUserNames(emails) {
 
 
 function getUserByEmail(email) {
-    const token = getToken(); // Kullanıcı token'ını al
+    const token = getToken(); 
     const headers = new Headers();
     headers.append('Authorization', `Bearer ${token}`);
     headers.append('Content-Type', 'application/json');
@@ -284,7 +284,7 @@ function getUserByEmail(email) {
                 throw new Error('Kullanıcı bilgileri alınamadı.');
             });
         }
-        return response.json(); // Başarılı yanıtı döndür
+        return response.json(); 
     })
     .then(userData => {
         console.log("userdata",userData.id);
@@ -292,11 +292,12 @@ function getUserByEmail(email) {
     })
     .catch(error => {
         console.error('Error in getUserByEmail:', error);
-        return null; // Hata durumunda null döndür
+        return null; 
     });
 }
 
 
+ //POSTLARI BEĞENME/BEĞENMEME FONKSİYONU START
 function likePost(postId, buttonElement) {
     const token = getToken();
     const headers = new Headers();
@@ -309,16 +310,15 @@ function likePost(postId, buttonElement) {
     const postedBy = decodedToken.sub; 
     console.log('Name from token:', postedBy);  
 
-    // Kullanıcı ID'sini almak için getUserByEmail fonksiyonunu çağır
     getUserByEmail(postedBy)
         .then(user => {
             if (!user) {
                 throw new Error('User ID could not be retrieved.');
             }
-            const userId = user; // Kullanıcı ID'sini al
+            const userId = user; 
             console.log('User ID from email:', userId);
 
-            // Like işlemi için fetch çağrısını yap
+           
             return fetch(`http://localhost:8088/like/by?userId=${userId}&postId=${postId}`, {
                 method: 'POST',
                 headers: headers,
@@ -326,89 +326,40 @@ function likePost(postId, buttonElement) {
         })
         .then(response => {
             if (!response.ok) {
-                return response.json().then(err => {
-                    // Eğer kullanıcı "ALREADY_LIKED" mesajı alırsa
-                    if (err.code === 409 && err.message === 'ALREADY_LIKED') {
-                        alert('Bu postu zaten beğenmişsiniz.');
-                        return null; // İşlem başarılı değil ama hata mesajı verildi
-                    } else {
-                        throw new Error('Beğenme işlemi başarısız oldu.');
-                    }
-                });
+                return response.json();
             }
             return response.json();
         })
         .then(updatedPost => {
-            console.log(updatedPost);
-            const likeButton = buttonElement;
-            const updatedLikeCount = updatedPost.data.post.likeCount;
-            likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-            console.log(updatedLikeCount);
-            
-            const popup = document.getElementById('popup');
-            if (popup && popup.querySelector('.button-container button')) {
-                const popupLikeButton = popup.querySelector('.button-container button');
-                popupLikeButton.innerHTML = `<i class="fa-regular fa-heart" style="color: ;"></i> (${updatedLikeCount})`;
+            console.log("updatedPost",updatedPost.data);
+
+            if (updatedPost && updatedPost.data) {
+                const likeButton = buttonElement;
+                const updatedLikeCount = updatedPost.data.post.likeCount;
+        
+                likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
+                console.log(updatedLikeCount);
+        
+                const popup = document.getElementById('popup');
+                if (popup && popup.querySelector('.button-container button')) {
+                    const popupLikeButton = popup.querySelector('.button-container button');
+                    popupLikeButton.innerHTML = `<i class="fa-regular fa-heart"></i> (${updatedLikeCount})`;
+                }
+            } else {
+                alert('Beğeni veya beğenme işleminden vazgeçme sırasında bir hata oluştu.');
             }
         })
         .catch(error => {
             console.error('Error liking post:', error);
         });
 }
-
+ //POSTLARI BEĞENME/BEĞENMEME FONKSİYONU END
 
 
 
  function getToken() {
     return localStorage.getItem('token');
   }
-
- //POSTLARI BEĞENME FONKSİYONU START
-// function likePost(postId, buttonElement) {
-//     //const token = localStorage.getItem("authToken");
-//     const token = getToken();
-//     const headers = new Headers();
-
-//     headers.append('Authorization', `Bearer ${token}`);
-//     headers.append('Content-Type', 'application/json');
-
-//     const decodedToken = parseJwt(token);
-//     console.log('Email from token:', decodedToken);
-//     const postedBy = decodedToken.sub; 
-//     console.log('Name from token:', postedBy);  
-//     const userId = getUserByEmail(postedBy); 
-//     console.log('User ID from email:', userId);
-
-//     //const commentContent = document.getElementById('comment-content').value;
-
-//     fetch(`http://localhost:8088/like/by?userId=${userId}&postId=${postId}`, {
-//         method: 'POST',
-//         headers: headers,
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             throw new Error('Beğenme işlemi başarısız oldu.'); 
-//         }
-//         return response.json(); 
-//     })
-//     .then(updatedPost => {
-        
-//         const likeButton = buttonElement;
-//         const updatedLikeCount = updatedPost.data.likeCount;
-//         likeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-//         console.log(updatedLikeCount);
-        
-//         const popup = document.getElementById('popup');
-//         if (popup && popup.querySelector('.button-container button')) {
-//             const popupLikeButton = popup.querySelector('.button-container button');
-//             popupLikeButton.innerHTML = `<i class="fas fa-heart"></i> (${updatedLikeCount})`;
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error liking post:', error);
-//     });
-// }
- //POSTLARI BEĞENME FONKSİYONU END
 
 
 
